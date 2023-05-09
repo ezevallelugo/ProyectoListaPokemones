@@ -272,6 +272,7 @@ def imprimir_menu():
     6 - Guardar en JSON
     7 - Leer JSON
     8 - Dar alta nuevo pokemon
+    9 - Guardar CSV
     S - Salir
     ==================================================
     """)

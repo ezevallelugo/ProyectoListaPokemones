@@ -1,5 +1,5 @@
 from os import system
-from pokemon_parser import (parser_csv,parser_json,crear_json_segun_tipo)
+from pokemon_parser import (parser_csv,parser_json,crear_json_segun_tipo,guardar_csv)
 from pokemon_funciones import (menu_principal,listar_cantidad_por_tipo,listar_pokemones_por_tipo,
                                listar_pokemones_por_habilidad, listar_pokemones_ordenados,alta_pokemon)  
 from pokemon_normalizar import (normalizar_datos)
@@ -62,6 +62,14 @@ while True:
                 else:
                     for pokemon in lista_pokemon:            
                         print(f"N°: {pokemon['N° Pokedex']:<5} Nombre: {pokemon['Nombre']:<15} PA: {pokemon['Poder de Ataque']:<5} PD: {pokemon['Poder de Defensa']:<5} Tipo: {pokemon['Tipo']} Habilidades: {pokemon['Habilidades']}")
+            else:
+                print("Los datos no estan normalizados")
+        case "9":
+            if bandera_normalizar == True:
+                if guardar_csv("prueba.csv",lista_pokemon) == -1:
+                    print("No se pudo guardar")
+                else:
+                    print("Datos guardados")
             else:
                 print("Los datos no estan normalizados")
         case "S":

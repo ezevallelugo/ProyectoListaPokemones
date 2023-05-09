@@ -39,9 +39,11 @@ def guardar_csv(path:str,lista:list):
     if type(path) == str:
         try:
             with open(path, 'w') as archivo:
-                for i in lista:
-                    archivo.write(i)
-                
+                for pokemon in lista:
+                    line = "{0},{1},{2},{3},{4},{5}"
+                    line = line.format(pokemon["N° Pokedex"],pokemon["Nombre"],pokemon["Tipo"],pokemon["Poder de Ataque"],pokemon["Poder de Defensa"],pokemon["Habilidades"])
+                    archivo.write(line)
+            retorno = 1
         except:
             print("No se pudo escribir el archivo")
             retorno = -1
