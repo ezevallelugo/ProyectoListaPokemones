@@ -35,6 +35,20 @@ def parser_csv(path:str) -> list:
         retorno = -1    
     return retorno
 
+def guardar_csv(path:str,lista:list):
+    if type(path) == str:
+        try:
+            with open(path, 'w') as archivo:
+                for i in lista:
+                    archivo.write(i)
+                
+        except:
+            print("No se pudo escribir el archivo")
+            retorno = -1
+    else:
+        retorno = -1
+    return retorno
+
 def parser_json(path:str):
     '''
     Brief: abre a modo de lectura el archivo json creado segun la ruta como parametro y devuelve el diccionario
@@ -105,3 +119,4 @@ def crear_json_segun_tipo(lista:list,path:str):
         print("Tipo de dato no admitido")
         retorno = -1
     return retorno
+

@@ -1,3 +1,5 @@
+from pokemon_normalizar import (sanitizar_dato,guardar_en_coleccion)
+
 
 def calcular_promedio(numero1,numero2):
     '''
@@ -109,8 +111,6 @@ def listar_pokemones_por_tipo(lista:list):
         retorno = -1
     return retorno  
 
-
-
 def listar_pokemones_por_habilidad(lista:list):
     '''
     Brief: lista los pokemones segun la habilidad que ingresa el usuario, imprime las habilidades existentes
@@ -146,22 +146,6 @@ def listar_pokemones_por_habilidad(lista:list):
         retorno = -1
     return retorno
 
-def listar_todos_los_pokemones(lista:list):
-    if type(lista) == list:
-        for pokemon in lista:
-            print(f"""
-            N° POKEDEX:         {pokemon['N° Pokedex']}
-            NOMBRE:             {pokemon['Nombre']}
-            TIPO:               {pokemon['Tipo']}
-            PODER DE ATAQUE:    {pokemon['Poder de Ataque']}
-            PODER DE DEFENSA:   {pokemon['Poder de Defensa']}
-            HABILIDADES:        {pokemon['Habilidades']}   
-            """)
-        retorno = 1
-    else:
-        retorno = -1
-    return retorno
-
 def listar_pokemones_ordenados(lista:list):
     '''
     Brief: lista los pokemones ordenados de mayor a menor poder de atque, y de la A a la Z en 
@@ -174,10 +158,14 @@ def listar_pokemones_ordenados(lista:list):
         for i in range(len(lista)-1):
             for j in range(i+1,len(lista)):
                 if lista[i]["Poder de Ataque"] < lista[j]["Poder de Ataque"]:
-                    lista[i],lista[j] = lista[j],lista[i]
+                    auxiliar = lista[i]
+                    lista[i] = lista[j]
+                    lista[j] = auxiliar
                 elif lista[i]["Poder de Ataque"] == lista[j]["Poder de Ataque"]:
                     if lista[i]["Nombre"] > lista[j]["Nombre"]:
-                        lista[i],lista[j] = lista[j],lista[i]
+                        auxiliar = lista[i]
+                        lista[i] = lista[j]
+                        lista[j] = auxiliar
         for pokemon in lista:            
             print(f"N°: {pokemon['N° Pokedex']:<5} Nombre: {pokemon['Nombre']:<15} PA: {pokemon['Poder de Ataque']:<5} PD: {pokemon['Poder de Defensa']:<5} Tipo: {pokemon['Tipo']} Habilidades: {pokemon['Habilidades']}")
         retorno = 1
@@ -220,6 +208,55 @@ def crear_diccionario_segun_tipo(lista:list,tipo:str):
         retorno = -1
     return retorno
 
+def alta_pokemon(lista:list):
+    if type(lista) == list and len(lista) > 0:
+        nuevo_numero = str(len(lista) + 1)
+        nuevo_pokemon = {}
+        nuevo_pokemon["N° Pokedex"] = nuevo_numero
+        nuevo_pokemon["Nombre"] = input("Ingrese el nombre del pokemon: ")
+        nuevo_pokemon["Tipo"] = input("Ingrese el tipo de pokemon: ")
+        nuevo_pokemon["Poder de Ataque"] = input("Ingrese el Poder de Ataque: ")
+        nuevo_pokemon["Poder de Defensa"] = input("Ingrese el Poder de Defensa: ")
+        nuevo_pokemon["Habilidades"] = input("Ingrese las habilidades: ")
+        bandera = True
+        if sanitizar_dato(nuevo_pokemon,"N° Pokedex","entero") == False:
+            bandera = False
+        if sanitizar_dato(nuevo_pokemon,"Nombre","string") == False:
+            bandera = False
+        else:
+            nuevo_pokemon["Nombre"] = nuevo_pokemon["Nombre"].capitalize()
+        if sanitizar_dato(nuevo_pokemon,"Tipo","string") == False:
+            bandera = False
+        else:
+            nuevo_pokemon["Tipo"] = guardar_en_coleccion(nuevo_pokemon["Tipo"])
+        if sanitizar_dato(nuevo_pokemon,"Poder de Ataque","entero") == False:
+            bandera = False
+        if sanitizar_dato(nuevo_pokemon,"Poder de Defensa","entero") == False:
+            bandera = False
+        if sanitizar_dato(nuevo_pokemon,"Habilidades","string") == False:
+            bandera = False
+        else:
+            nuevo_pokemon["Habilidades"] = guardar_en_coleccion(nuevo_pokemon["Habilidades"])
+        if bandera == False:
+            print("Error. No se pudo normalizar todos los datos")
+            retorno = -1
+        else:
+            print("Dato normalizado")
+            repetido = False
+            for pokemon in lista:
+                if pokemon["Nombre"] == nuevo_pokemon["Nombre"]:
+                    repetido = True
+            if repetido == True:
+                print("Hay un pokemon ya existente")
+                retorno = -1
+            else:
+                lista.append(nuevo_pokemon)
+                print("Pokemon Agregado")
+                retorno = 1
+    else:
+        retorno = -1
+    return retorno
+
 def imprimir_menu():
     '''
     Brief: imprime el menu con las opciones disponibles
@@ -234,6 +271,7 @@ def imprimir_menu():
     5 - Listar pokemones ordenados por poder de ataque
     6 - Guardar en JSON
     7 - Leer JSON
+    8 - Dar alta nuevo pokemon
     S - Salir
     ==================================================
     """)

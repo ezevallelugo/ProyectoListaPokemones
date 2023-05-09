@@ -1,7 +1,7 @@
 from os import system
 from pokemon_parser import (parser_csv,parser_json,crear_json_segun_tipo)
 from pokemon_funciones import (menu_principal,listar_cantidad_por_tipo,listar_pokemones_por_tipo,
-                               listar_pokemones_por_habilidad, listar_pokemones_ordenados)  
+                               listar_pokemones_por_habilidad, listar_pokemones_ordenados,alta_pokemon)  
 from pokemon_normalizar import (normalizar_datos)
 
 
@@ -55,6 +55,15 @@ while True:
             else:
                 for i in lista_json["pokemones_tipo"]:
                     print(f"{i['Nombre']} - {i['Mayor valor']} - {i['Tipo de poder']}")
+        case "8":
+            if bandera_normalizar == True:
+                if alta_pokemon(lista_pokemon) == -1:
+                    print("No se pudo dar el alta al pokemon")
+                else:
+                    for pokemon in lista_pokemon:            
+                        print(f"N°: {pokemon['N° Pokedex']:<5} Nombre: {pokemon['Nombre']:<15} PA: {pokemon['Poder de Ataque']:<5} PD: {pokemon['Poder de Defensa']:<5} Tipo: {pokemon['Tipo']} Habilidades: {pokemon['Habilidades']}")
+            else:
+                print("Los datos no estan normalizados")
         case "S":
             print("Programa finalizado")
             break
